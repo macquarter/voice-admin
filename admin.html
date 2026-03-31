@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>콘텐츠 관리 | 손수오 보이스 컨설팅</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#fafbfc;--bg-card:#ffffff;--bg-hover:#f4f5f7;--bg-input:#f8f9fb;
+  --border:#e2e4e9;--border-focus:#ff6b35;
+  --text:#1a1d26;--text2:#5e6278;--text3:#9ca0b0;
+  --accent:#ff6b35;--accent-light:rgba(255,107,53,.08);--accent-hover:#e85d2c;
+  --green:#22c55e;--green-bg:rgba(34,197,94,.08);
+  --red:#ef4444;--red-bg:rgba(239,68,68,.08);
+  --yellow:#f59e0b;--yellow-bg:rgba(245,158,11,.08);
+  --blue:#3b82f6;--blue-bg:rgba(59,130,246,.08);
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg:0 4px 16px rgba(0,0,0,.08);
+  --radius:12px;--radius-sm:8px;
+}
+body{font-family:'Inter','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+/* ── Top Nav ── */
+.topnav{background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:60px}
+.topnav .logo{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1rem;color:var(--accent)}
+.topnav .logo span{font-size:1.3rem}
+.topnav-links{display:flex;gap:.25rem}
+.topnav-links a{padding:.5rem .9rem;border-radius:var(--radius-sm);font-size:.85rem;font-weight:500;color:var(--text2);cursor:pointer;transition:all .15s;text-decoration:none;white-space:nowrap}
+.topnav-links a:hover{background:var(--bg-hover);color:var(--text)}
+.topnav-links a.active{background:var(--accent-light);color:var(--accent)}
+.topnav-right{display:flex;align-items:center;gap:.75rem}
+.topnav-right a{font-size:.8rem;color:var(--text2);text-decoration:none;padding:.4rem .7rem;border-radius:var(--radius-sm);transition:all .15s}
+.topnav-right a:hover{background:var(--bg-hover);color:var(--text)}
+
+/* ── Layout ── */
+.container{max-width:960px;margin:0 auto;padding:2rem 1.5rem}
+.page{display:none}.page.active{display:block}
+
+/* ── Cards ── */
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;margin-bottom:1.25rem;box-shadow:var(--shadow);transition:box-shadow .2s}
+.card:hover{box-shadow:var(--shadow-lg)}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.card-header h2{font-size:1.1rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.card-header .tag{font-size:.7rem;padding:.2rem .5rem;border-radius:4px;font-weight:600;letter-spacing:.03em}
+
+/* ── Section Header ── */
+.section-banner{background:linear-gradient(135deg,#ff6b35 0%,#ff3366 100%);border-radius:var(--radius);padding:1.75rem 2rem;margin-bottom:1.5rem;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.section-banner h1{font-size:1.3rem;font-weight:700}
+.section-banner p{font-size:.85rem;opacity:.85;margin-top:.25rem}
+.section-banner .actions{display:flex;gap:.5rem}
+
+/* ── Forms ── */
+.field{margin-bottom:1.25rem}
+.field label{display:block;font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:.4rem;letter-spacing:.02em;text-transform:uppercase}
+.field input,.field textarea,.field select{width:100%;padding:.65rem .9rem;background:var(--bg-input);border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:inherit;font-size:.9rem;transition:all .15s;outline:none}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px rgba(255,107,53,.1)}
+.field textarea{min-height:80px;resize:vertical;line-height:1.6}
+.field .hint{font-size:.75rem;color:var(--text3);margin-top:.3rem}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1rem;border:none;border-radius:var(--radius-sm);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-hover)}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text2)}.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-ghost{background:transparent;color:var(--text2);padding:.4rem .6rem}.btn-ghost:hover{background:var(--bg-hover);color:var(--text)}
+.btn-green{background:var(--green-bg);color:var(--green)}.btn-green:hover{background:rgba(34,197,94,.15)}
+.btn-red{background:var(--red-bg);color:var(--red)}.btn-red:hover{background:rgba(239,68,68,.15)}
+.btn-sm{padding:.35rem .65rem;font-size:.78rem}
+.btn-icon{width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);background:transparent;border:1px solid var(--border);cursor:pointer;color:var(--text2);transition:all .15s}
+.btn-icon:hover{background:var(--bg-hover);color:var(--text)}
+
+/* ── Stats ── */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;box-shadow:var(--shadow)}
+.stat-item .num{font-size:1.8rem;font-weight:700;color:var(--accent)}
+.stat-item .label{font-size:.78rem;color:var(--text2);margin-top:.2rem;font-weight:500}
+
+/* ── Table ── */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg-card)}
+table{width:100%;border-collapse:collapse}
+th,td{padding:.75rem 1rem;text-align:left;font-size:.85rem;border-bottom:1px solid var(--border)}
+th{background:var(--bg-hover);color:var(--text2);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,107,53,.02)}
+
+/* ── Badges ── */
+.badge{display:inline-flex;align-items:center;padding:.2rem .55rem;border-radius:6px;font-size:.72rem;font-weight:600;letter-spacing:.02em}
+.badge-pending{background:var(--yellow-bg);color:var(--yellow)}
+.badge-confirmed{background:var(--green-bg);color:var(--green)}
+.badge-cancelled{background:var(--red-bg);color:var(--red)}
+.badge-live{background:var(--green-bg);color:var(--green)}
+.badge-draft{background:var(--bg-hover);color:var(--text3)}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--text);color:#fff;padding:.75rem 1.25rem;border-radius:var(--radius-sm);font-size:.85rem;font-weight:500;box-shadow:var(--shadow-lg);transform:translateY(100px);opacity:0;transition:all .3s;z-index:999}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#16a34a}
+.toast.error{background:var(--red)}
+
+/* ── Inline edit block ── */
+.edit-block{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:1rem;overflow:hidden;transition:box-shadow .2s}
+.edit-block:hover{box-shadow:var(--shadow-lg)}
+.edit-block-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;background:var(--bg-hover);border-bottom:1px solid var(--border);cursor:pointer}
+.edit-block-header h3{font-size:.9rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.edit-block-header .chevron{transition:transform .2s;color:var(--text3)}
+.edit-block-header.open .chevron{transform:rotate(180deg)}
+.edit-block-body{padding:1.25rem;display:none}
+.edit-block-body.open{display:block}
+
+/* ── Course / Testimonial Cards ── */
+.item-card{border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:.75rem;background:var(--bg-card);transition:all .2s;position:relative}
+.item-card:hover{box-shadow:var(--shadow)}
+.item-card .item-actions{position:absolute;top:1rem;right:1rem;display:flex;gap:.3rem;opacity:0;transition:opacity .15s}
+.item-card:hover .item-actions{opacity:1}
+.item-card h4{font-size:.95rem;font-weight:600;margin-bottom:.3rem}
+.item-card .meta{font-size:.8rem;color:var(--text2)}
+.item-card .desc{font-size:.85rem;color:var(--text2);margin-top:.5rem;line-height:1.5}
+
+/* ── Modal ── */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:var(--bg-card);border-radius:var(--radius);padding:2rem;width:90%;max-width:560px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.modal h2{font-size:1.1rem;font-weight:700;margin-bottom:1.25rem}
+.modal-footer{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)}
+
+/* ── Empty state ── */
+.empty{text-align:center;padding:3rem 1rem;color:var(--text3)}
+.empty .icon{font-size:2.5rem;margin-bottom:.75rem}
+.empty p{font-size:.9rem}
+
+/* ── Save bar ── */
+.save-bar{position:sticky;bottom:0;background:var(--bg-card);border-top:1px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;margin:0 -1.5rem;box-shadow:0 -2px 10px rgba(0,0,0,.05);display:none}
+.save-bar.visible{display:flex}
+.save-bar .status{font-size:.8rem;color:var(--text3);display:flex;align-items:center;gap:.4rem}
+.save-bar .status .dot{width:6px;height:6px;border-radius:50%;background:var(--yellow)}
+.save-bar.saved .status .dot{background:var(--green)}
+
+/* ── Image Upload Drop Zone ── */
+.img-upload{border:2px dashed var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg-input);position:relative}
+.img-upload:hover,.img-upload.dragover{border-color:var(--accent);background:var(--accent-light)}
+.img-upload .drop-text{font-size:.85rem;color:var(--text3);pointer-events:none}
+.img-upload .drop-text strong{color:var(--accent);font-weight:600}
+.img-upload .drop-icon{font-size:2rem;margin-bottom:.5rem;opacity:.5}
+.img-upload input[type=file]{display:none}
+.img-upload .preview-wrap{position:relative;display:inline-block}
+.img-upload .preview-wrap img{max-width:100%;max-height:200px;border-radius:var(--radius-sm);box-shadow:var(--shadow)}
+.img-upload .remove-btn{position:absolute;top:-8px;right:-8px;width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;border:none;cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);transition:transform .15s}
+.img-upload .remove-btn:hover{transform:scale(1.15)}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .topnav{padding:0 1rem;flex-wrap:wrap;height:auto;padding:.75rem 1rem}
+  .topnav-links{overflow-x:auto;padding:.5rem 0}
+  .container{padding:1.25rem 1rem}
+  .field-row,.field-row-3{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .section-banner{flex-direction:column;gap:.75rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<nav class="topnav">
+  <div class="logo"><span>🎙️</span> 손수오 관리</div>
+  <div class="topnav-links">
+    <a class="active" onclick="nav('dashboard',this)">대시보드</a>
+    <a onclick="nav('content',this)">콘텐츠 편집</a>
+    <a onclick="nav('courses',this)">교육 과정</a>
+    <a onclick="nav('testimonials',this)">수강 후기</a>
+    <a onclick="nav('bookings',this)">예약 관리</a>
+    <a onclick="nav('scheduler',this)">📅 스케줄러</a>
+    <a onclick="nav('settings',this)">설정</a>
+  </div>
+  <div class="topnav-right">
+    <a href="/" target="_blank">🔗 사이트 보기</a>
+  </div>
+</nav>
+
+<!-- ═══════════ DASHBOARD ═══════════ -->
+<div class="page active" id="page-dashboard">
+<div class="container">
+  <div class="section-banner">
+    <div><h1>안녕하세요, 관리자님</h1><p>오늘도 목소리로 세상을 바꾸는 하루입니다</p></div>
+    <div class="actions">
+      <button class="btn" style="background:rgba(255,255,255,.2);color:#fff" onclick="nav('content',document.querySelector('.topnav-links a:nth-child(2)'))">콘텐츠 수정하기 →</button>
+    </div>
+  </div>
+  <div class="stats-row" id="statsRow">
+    <div class="stat-item"><div class="num" id="sTotal">-</div><div class="label">전체 예약</div></div>
+    <div class="stat-item"><div class="num" id="sPending">-</div><div class="label">⏳ 대기 중</div></div>
+    <div class="stat-item"><div class="num" id="sConfirmed">-</div><div class="label">✅ 확정</div></div>
+    <div class="stat-item"><div class="num" id="sCancelled">-</div><div class="label">❌ 취소</div></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h2>📋 최근 예약</h2><a style="font-size:.8rem;color:var(--accent);cursor:pointer;text-decoration:none" onclick="nav('bookings',document.querySelector('.topnav-links a:nth-child(5)'))">전체 보기 →</a></div>
+    <div id="recentList" style="min-height:60px"></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h2>🚀 빠른 작업</h2></div>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="nav('content',document.querySelector('.topnav-links a:nth-child(2)'))">📝 콘텐츠 편집</button>
+      <button class="btn btn-outline" onclick="nav('courses',document.querySelector('.topnav-links a:nth-child(3)'))">📚 과정 관리</button>
+      <button class="btn btn-outline" onclick="nav('testimonials',document.querySelector('.topnav-links a:nth-child(4)'))">💬 후기 관리</button>
+      <button class="btn btn-outline" onclick="nav('settings',document.querySelector('.topnav-links a:nth-child(6)'))">⚙️ DB 초기화</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════ CONTENT EDITOR ═══════════ -->
+<div class="page" id="page-content">
+<div class="container">
+  <div class="section-banner">
+    <div><h1>콘텐츠 편집</h1><p>랜딩 페이지의 모든 텍스트를 블로그처럼 쉽게 수정하세요</p></div>
+    <div class="actions"><button class="btn" style="background:rgba(255,255,255,.2);color:#fff" id="saveAllBtn" onclick="saveAllContent()">💾 전체 저장</button></div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="edit-block">
+    <div class="edit-block-header open" onclick="toggleBlock(this)">
+      <h3>🏠 섹션 1 — 대문 화면 (히어로)</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body open">
+      <div class="field"><label>메인 타이틀</label><textarea id="c_hero_title" rows="2" oninput="markDirty()"></textarea><div class="hint">줄바꿈은 \n으로 구분됩니다. 방문자가 첫 눈에 보는 핵심 문구입니다.</div></div>
+      <div class="field"><label>부제목</label><textarea id="c_hero_subtitle" rows="2" oninput="markDirty()"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>CTA 버튼 텍스트</label><input id="c_hero_cta" oninput="markDirty()"></div>
+        <div class="field"><label>CTA 링크 URL</label><input id="c_hero_cta_url" placeholder="https://calendly.com/..." oninput="markDirty()"><div class="hint">예약 페이지 또는 외부 링크</div></div>
+      </div>
+      <div class="field"><label>상단 뱃지 텍스트</label><input id="c_hero_badge" placeholder="30년 성악 경력 · 단국대학교 교수" oninput="markDirty()"><div class="hint">히어로 상단의 작은 뱃지 텍스트</div></div>
+    </div>
+  </div>
+
+  <!-- Free Trial Banner -->
+  <div class="edit-block">
+    <div class="edit-block-header" onclick="toggleBlock(this)">
+      <h3>🎁 무료 체험 배너</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body">
+      <div class="field"><label>배너 타이틀</label><input id="c_free_trial_title" oninput="markDirty()"></div>
+      <div class="field"><label>배너 설명</label><textarea id="c_free_trial_desc" rows="2" oninput="markDirty()"></textarea></div>
+      <div class="field"><label>배너 CTA 버튼</label><input id="c_free_trial_cta" oninput="markDirty()"></div>
+    </div>
+  </div>
+
+  <!-- YouTube / Media Section -->
+  <div class="edit-block">
+    <div class="edit-block-header" onclick="toggleBlock(this)">
+      <h3>🎬 유튜브 / 미디어</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body">
+      <p style="font-size:.8rem;color:var(--text2);margin-bottom:1rem;">메인 페이지에 표시되는 유튜브 영상 2개를 관리합니다.</p>
+      <div class="field"><label>미디어 섹션 타이틀</label><input id="c_media_title" placeholder="직접 확인하세요" oninput="markDirty()"></div>
+      <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;background:var(--bg)">
+        <div style="font-size:.82rem;font-weight:600;color:var(--accent);margin-bottom:.75rem">📹 영상 1 (좌측)</div>
+        <div class="field"><label>유튜브 URL</label><input id="c_youtube_url" placeholder="https://www.youtube.com/watch?v=..." oninput="markDirty()"></div>
+        <div class="field-row">
+          <div class="field"><label>영상 제목</label><input id="c_youtube_title" oninput="markDirty()"></div>
+          <div class="field"><label>영상 설명</label><input id="c_youtube_desc" oninput="markDirty()"></div>
+        </div>
+      </div>
+      <div style="border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;background:var(--bg)">
+        <div style="font-size:.82rem;font-weight:600;color:var(--accent);margin-bottom:.75rem">📹 영상 2 (우측)</div>
+        <div class="field"><label>유튜브 URL</label><input id="c_youtube_url_2" placeholder="https://www.youtube.com/watch?v=..." oninput="markDirty()"></div>
+        <div class="field-row">
+          <div class="field"><label>영상 제목</label><input id="c_youtube_title_2" oninput="markDirty()"></div>
+          <div class="field"><label>영상 설명</label><input id="c_youtube_desc_2" oninput="markDirty()"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem Section -->
+  <div class="edit-block">
+    <div class="edit-block-header" onclick="toggleBlock(this)">
+      <h3>⚡ 섹션 2 — 문제 제기</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body">
+      <div class="field"><label>섹션 타이틀</label><input id="c_problem_title" oninput="markDirty()"></div>
+      <div class="field"><label>섹션 설명</label><textarea id="c_problem_desc" rows="2" oninput="markDirty()"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>일반 강사 항목 (쉼표 구분)</label><textarea id="c_problem_left" rows="3" oninput="markDirty()"></textarea><div class="hint">예: 천편일률적 교재,표면적 피드백,단기 효과</div></div>
+        <div class="field"><label>보이스 컨설턴트 항목 (쉼표 구분)</label><textarea id="c_problem_right" rows="3" oninput="markDirty()"></textarea><div class="hint">예: 1:1 맞춤 진단,과학적 음성 분석,지속적 변화</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expert Section -->
+  <div class="edit-block">
+    <div class="edit-block-header" onclick="toggleBlock(this)">
+      <h3>👨‍🏫 섹션 3 — 전문가 소개</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body">
+      <div class="field-row">
+        <div class="field"><label>이름</label><input id="c_expert_name" oninput="markDirty()"></div>
+        <div class="field"><label>직함</label><input id="c_expert_title" oninput="markDirty()"></div>
+      </div>
+      <div class="field"><label>소개 문구</label><textarea id="c_expert_intro" rows="2" oninput="markDirty()"></textarea></div>
+      <div class="field"><label>소개 이미지</label>
+        <div class="img-upload" id="drop_expert_intro_image" onclick="document.getElementById('file_expert_intro_image').click()" ondragover="handleDragOver(event,this)" ondragleave="handleDragLeave(event,this)" ondrop="handleDrop(event,this,'expert_intro_image')">
+          <input type="file" id="file_expert_intro_image" accept="image/*" onchange="handleFileSelect(event,'expert_intro_image')">
+          <div id="placeholder_expert_intro_image"><div class="drop-icon">🖼️</div><div class="drop-text">이미지를 여기에 드래그하거나 <strong>클릭하여 선택</strong></div></div>
+          <div id="preview_expert_intro_image" style="display:none"></div>
+        </div>
+        <input type="hidden" id="c_expert_intro_image">
+        <div class="hint">전문가 소개 영역에 표시할 이미지. 드래그앤드롭 또는 클릭하여 파일 선택</div>
+      </div>
+      <div class="field"><label>경력 및 약력 (쉼표 구분)</label><textarea id="c_expert_credentials" rows="2" oninput="markDirty()"></textarea><div class="hint">예: 20년 보이스 트레이닝,500+ 수강생,방송·기업 출강</div></div>
+      <div class="field"><label>교수 프로필 사진</label>
+        <div class="img-upload" id="drop_expert_photo_url" onclick="document.getElementById('file_expert_photo_url').click()" ondragover="handleDragOver(event,this)" ondragleave="handleDragLeave(event,this)" ondrop="handleDrop(event,this,'expert_photo_url')">
+          <input type="file" id="file_expert_photo_url" accept="image/*" onchange="handleFileSelect(event,'expert_photo_url')">
+          <div id="placeholder_expert_photo_url"><div class="drop-icon">📷</div><div class="drop-text">프로필 사진을 여기에 드래그하거나 <strong>클릭하여 선택</strong></div></div>
+          <div id="preview_expert_photo_url" style="display:none"></div>
+        </div>
+        <input type="hidden" id="c_expert_photo_url">
+        <div class="hint">교수 프로필 사진. 빈칸이면 기본 플레이스홀더 표시</div>
+      </div>
+      <div class="field"><label>해결책 섹션 설명</label><textarea id="c_expert_desc" rows="2" oninput="markDirty()"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>플로팅 카드 숫자</label><input id="c_expert_float_num" placeholder="No.1" oninput="markDirty()"></div>
+        <div class="field"><label>플로팅 카드 라벨</label><input id="c_expert_float_label" placeholder="보이스 컨설턴트" oninput="markDirty()"></div>
+      </div>
+      <div class="field"><label>핵심 수치 (파이프 구분)</label><input id="c_expert_stats" oninput="markDirty()"><div class="hint">형식: 숫자,라벨|숫자,라벨|숫자,라벨 — 예: 1:1,맞춤형 코칭|38,효과 기법|45,마법 훈련</div></div>
+      <div class="field"><label>자격 뱃지 (파이프 구분)</label><textarea id="c_expert_creds" rows="2" oninput="markDirty()"></textarea><div class="hint">형식: 아이콘,라벨,값|... — 예: 🎓,학력,음성학 전공|📺,미디어,방송 다수 출연</div></div>
+    </div>
+  </div>
+
+  <!-- Magic Section (45의 마법) -->
+  <div class="edit-block">
+    <div class="edit-block-header" onclick="toggleBlock(this)">
+      <h3>✨ 45의 마법 / 38 효과</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body">
+      <div class="field"><label>마법 섹션 타이틀</label><input id="c_magic_title" placeholder="45의 마법과 38 효과" oninput="markDirty()"></div>
+      <div class="field"><label>마법 섹션 설명</label><textarea id="c_magic_desc" rows="3" oninput="markDirty()"></textarea><div class="hint">줄바꿈으로 문단을 나눌 수 있습니다</div></div>
+    </div>
+  </div>
+
+  <!-- Curriculum Section -->
+  <div class="edit-block">
+    <div class="edit-block-header" onclick="toggleBlock(this)">
+      <h3>📚 섹션 4 — 교육 과정 소개</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body">
+      <div class="field"><label>섹션 타이틀</label><input id="c_curriculum_title" placeholder="오직 1인을 위한 완벽한 맞춤형 교육" oninput="markDirty()"><div class="hint">줄바꿈은 \n으로 구분</div></div>
+      <div class="field"><label>섹션 설명</label><textarea id="c_curriculum_desc" rows="2" oninput="markDirty()"></textarea></div>
+    </div>
+  </div>
+
+  <!-- Testimonial Section Header -->
+  <div class="edit-block">
+    <div class="edit-block-header" onclick="toggleBlock(this)">
+      <h3>💬 수강 후기 섹션 헤더</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body">
+      <div class="field"><label>섹션 타이틀</label><input id="c_testimonial_title" placeholder="목소리가 바뀌자 인생이 달라졌습니다" oninput="markDirty()"><div class="hint">줄바꿈은 \n으로 구분</div></div>
+      <div class="field"><label>섹션 설명</label><input id="c_testimonial_desc" placeholder="실제 수강생들의 변화를 직접 확인하세요." oninput="markDirty()"></div>
+    </div>
+  </div>
+
+  <!-- Persona Section Header -->
+  <div class="edit-block">
+    <div class="edit-block-header" onclick="toggleBlock(this)">
+      <h3>🎯 맞춤 추천 섹션 헤더</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body">
+      <div class="field"><label>섹션 타이틀</label><input id="c_persona_title" placeholder="나에게 맞는 과정은?" oninput="markDirty()"></div>
+    </div>
+  </div>
+
+  <!-- Booking Section -->
+  <div class="edit-block">
+    <div class="edit-block-header" onclick="toggleBlock(this)">
+      <h3>📅 섹션 5 — 예약 유도</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body">
+      <div class="field"><label>예약 섹션 타이틀</label><input id="c_booking_title" oninput="markDirty()"></div>
+      <div class="field"><label>예약 섹션 설명</label><textarea id="c_booking_desc" rows="2" oninput="markDirty()"></textarea></div>
+      <div class="field"><label>예약 버튼 텍스트</label><input id="c_booking_cta" oninput="markDirty()"></div>
+      <div class="field"><label>외부 예약 링크</label><input id="c_booking_url" placeholder="https://calendly.com/..." oninput="markDirty()"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="edit-block">
+    <div class="edit-block-header" onclick="toggleBlock(this)">
+      <h3>📎 기타 — 푸터 / 공통</h3>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </div>
+    <div class="edit-block-body">
+      <div class="field"><label>푸터 텍스트</label><input id="c_footer_text" oninput="markDirty()"></div>
+      <div class="field-row-3">
+        <div class="field"><label>신뢰 뱃지 1</label><input id="c_trust_1" placeholder="500+ 수강생" oninput="markDirty()"></div>
+        <div class="field"><label>신뢰 뱃지 2</label><input id="c_trust_2" placeholder="만족도 98%" oninput="markDirty()"></div>
+        <div class="field"><label>신뢰 뱃지 3</label><input id="c_trust_3" placeholder="20년 경력" oninput="markDirty()"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:1rem 0">
+    <button class="btn btn-primary" style="padding:.7rem 2rem;font-size:.9rem" onclick="saveAllContent()">💾 모든 변경사항 저장</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════ COURSES ═══════════ -->
+<div class="page" id="page-courses">
+<div class="container">
+  <div class="section-banner">
+    <div><h1>교육 과정 관리</h1><p>과정 정보를 추가하거나 수정하세요</p></div>
+    <div class="actions"><button class="btn" style="background:rgba(255,255,255,.2);color:#fff" onclick="openCourseModal()">+ 새 과정 추가</button></div>
+  </div>
+  <div id="courseCards" style="min-height:100px"></div>
+</div>
+</div>
+
+<!-- ═══════════ TESTIMONIALS ═══════════ -->
+<div class="page" id="page-testimonials">
+<div class="container">
+  <div class="section-banner">
+    <div><h1>수강생 후기 관리</h1><p>후기를 추가하거나 편집하세요</p></div>
+    <div class="actions"><button class="btn" style="background:rgba(255,255,255,.2);color:#fff" onclick="openTestiModal()">+ 새 후기 추가</button></div>
+  </div>
+  <div id="testiCards" style="min-height:100px"></div>
+</div>
+</div>
+
+<!-- ═══════════ BOOKINGS ═══════════ -->
+<div class="page" id="page-bookings">
+<div class="container">
+  <div class="section-banner">
+    <div><h1>예약 관리</h1><p>예약 내역을 확인하고 상태를 관리하세요</p></div>
+  </div>
+  <div style="margin-bottom:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+    <button class="btn btn-primary btn-sm filter-btn active" onclick="filterB('all',this)">전체</button>
+    <button class="btn btn-outline btn-sm filter-btn" onclick="filterB('pending',this)">⏳ 대기</button>
+    <button class="btn btn-outline btn-sm filter-btn" onclick="filterB('confirmed',this)">✅ 확정</button>
+    <button class="btn btn-outline btn-sm filter-btn" onclick="filterB('cancelled',this)">❌ 취소</button>
+  </div>
+  <div class="table-wrap">
+    <table><thead><tr><th>이름</th><th>연락처</th><th>과정</th><th>날짜 / 시간</th><th>상태</th><th>관리</th></tr></thead><tbody id="bookingsBody"></tbody></table>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════ SCHEDULER ═══════════ -->
+<div class="page" id="page-scheduler">
+<div class="container">
+  <div class="section-banner">
+    <div><h1>📅 스케줄러</h1><p>예약 현황을 달력으로 확인하고, 특정 날짜를 차단할 수 있습니다</p></div>
+  </div>
+
+  <!-- 달력 -->
+  <div class="card">
+    <div class="card-header" style="display:flex;justify-content:space-between;align-items:center">
+      <button class="btn btn-outline btn-sm" onclick="schMonth(-1)">◀ 이전</button>
+      <h2 id="schCalTitle" style="margin:0">2026년 4월</h2>
+      <button class="btn btn-outline btn-sm" onclick="schMonth(1)">다음 ▶</button>
+    </div>
+    <div style="margin-top:1rem">
+      <div id="schCalGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:.85rem"></div>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:1rem;flex-wrap:wrap;font-size:.78rem;color:var(--text2)">
+      <span>🟡 예약 있음</span>
+      <span>🔴 차단됨</span>
+      <span>⬜ 비어 있음</span>
+    </div>
+  </div>
+
+  <!-- 슬롯 차단 -->
+  <div class="card">
+    <div class="card-header"><h2>🚫 슬롯 차단 관리</h2></div>
+    <p style="color:var(--text2);font-size:.85rem;margin-bottom:1rem">특정 날짜의 특정 시간 또는 전체를 차단할 수 있습니다.</p>
+    <div style="display:flex;gap:.5rem;align-items:end;margin-bottom:1rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:140px">
+        <label style="font-size:.75rem;color:var(--text2);margin-bottom:4px;display:block">날짜</label>
+        <input type="date" id="blockDateInput" class="input">
+      </div>
+      <div style="flex:1;min-width:140px">
+        <label style="font-size:.75rem;color:var(--text2);margin-bottom:4px;display:block">시간</label>
+        <select id="blockTimeInput" class="input" style="padding:.55rem .7rem">
+          <option value="ALL">🚫 전체 차단 (하루 종일)</option>
+          <option value="09:00">09:00</option>
+          <option value="10:00">10:00</option>
+          <option value="11:00">11:00</option>
+          <option value="13:00">13:00</option>
+          <option value="14:00">14:00</option>
+          <option value="15:00">15:00</option>
+          <option value="16:00">16:00</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="addBlockSlot()" style="height:38px">차단 추가</button>
+    </div>
+    <div id="blockedSlotsList"></div>
+  </div>
+
+  <!-- 날짜별 상세 -->
+  <div class="card" id="schDayDetail" style="display:none">
+    <div class="card-header"><h2 id="schDayTitle">날짜 상세</h2></div>
+    <div id="schDayContent"></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════ SETTINGS ═══════════ -->
+<div class="page" id="page-settings">
+<div class="container">
+  <div class="section-banner">
+    <div><h1>설정</h1><p>데이터베이스 및 시스템 설정</p></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h2>🗄️ 데이터베이스 초기화</h2></div>
+    <p style="color:var(--text2);font-size:.88rem;margin-bottom:1rem">DB를 초기화하면 기본 교육 과정, 콘텐츠, 후기 데이터가 생성됩니다. 기존 데이터가 있으면 유지됩니다.</p>
+    <button class="btn btn-primary" onclick="initDB()">데이터베이스 초기화</button>
+    <div id="dbMsg" style="margin-top:1rem;font-size:.85rem"></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h2>🔗 외부 연동</h2></div>
+    <div class="field"><label>Calendly 링크</label><input id="set_calendly" placeholder="https://calendly.com/your-link"><div class="hint">예약 CTA 버튼에 연결될 외부 링크입니다</div></div>
+    <button class="btn btn-outline" onclick="toast('설정이 저장되었습니다','success')">저장</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════ MODALS ═══════════ -->
+<!-- Course Modal -->
+<div class="modal-overlay" id="courseModal">
+<div class="modal">
+  <h2 id="courseModalTitle">새 교육 과정</h2>
+  <input type="hidden" id="cm_id">
+  <div class="field"><label>과정명</label><input id="cm_name" placeholder="예: 4주 기본 과정"></div>
+  <div class="field-row">
+    <div class="field"><label>기간</label><input id="cm_duration" placeholder="예: 4주 (주 1회)"></div>
+    <div class="field"><label>가격 (원)</label><input id="cm_price" type="number" placeholder="800000"></div>
+  </div>
+  <div class="field"><label>설명</label><textarea id="cm_desc" rows="3"></textarea></div>
+  <div class="field"><label>특징 (쉼표 구분)</label><input id="cm_features" placeholder="1:1 화상,맞춤 커리큘럼,녹화본 제공"></div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeCourseModal()">취소</button>
+    <button class="btn btn-primary" onclick="saveCourse()">저장</button>
+  </div>
+</div>
+</div>
+
+<!-- Testimonial Modal -->
+<div class="modal-overlay" id="testiModal">
+<div class="modal">
+  <h2 id="testiModalTitle">새 수강 후기</h2>
+  <input type="hidden" id="tm_id">
+  <div class="field-row">
+    <div class="field"><label>이름</label><input id="tm_name" placeholder="김○○ 대표"></div>
+    <div class="field"><label>직함</label><input id="tm_role" placeholder="IT 스타트업 CEO"></div>
+  </div>
+  <div class="field"><label>후기 내용</label><textarea id="tm_content" rows="4"></textarea></div>
+  <div class="field"><label>별점</label><select id="tm_rating"><option value="5">★★★★★ (5)</option><option value="4">★★★★☆ (4)</option><option value="3">★★★☆☆ (3)</option></select></div>
+  <div class="field"><label>🔊 비포 음성 URL</label><input id="tm_audio_before" placeholder="비포 음성파일 URL (선택사항)"><div class="hint">Blob 저장소 또는 외부 URL</div></div>
+  <div class="field"><label>🔊 애프터 음성 URL</label><input id="tm_audio_after" placeholder="애프터 음성파일 URL (선택사항)"><div class="hint">Blob 저장소 또는 외부 URL</div></div>
+  <div class="field"><label>🎤 음성 설명</label><input id="tm_audio_label" placeholder="예: 떨리는 목소리 → 안정적이고 힘 있는 목소리"><div class="hint">비포/애프터 변화 설명</div></div>
+  <div class="modal-footer">
+    <button class="btn btn-outline" onclick="closeTestiModal()">취소</button>
+    <button class="btn btn-primary" onclick="saveTesti()">저장</button>
+  </div>
+</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const API = '/api';
+let allBookings = [];
+let isDirty = false;
+
+// ── Content key mapping ──
+const CONTENT_KEYS = [
+  'hero_title','hero_subtitle','hero_cta','hero_cta_url','hero_badge',
+  'free_trial_title','free_trial_desc','free_trial_cta',
+  'youtube_url','youtube_title','youtube_desc',
+  'youtube_url_2','youtube_title_2','youtube_desc_2',
+  'media_title',
+  'problem_title','problem_desc','problem_left','problem_right',
+  'expert_name','expert_title','expert_intro','expert_credentials',
+  'expert_photo_url','expert_intro_image','expert_desc','expert_float_num','expert_float_label',
+  'expert_stats','expert_creds',
+  'magic_title','magic_desc',
+  'curriculum_title','curriculum_desc',
+  'testimonial_title','testimonial_desc',
+  'persona_title',
+  'booking_title','booking_desc','booking_cta','booking_url',
+  'footer_text','trust_1','trust_2','trust_3'
+];
+
+// ── Navigation ──
+function nav(page, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.topnav-links a').forEach(a => a.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const loaders = {dashboard:loadDash, content:loadContent, courses:loadCourses, testimonials:loadTestimonials, bookings:loadBookings, scheduler:loadScheduler};
+  if (loaders[page]) loaders[page]();
+  window.scrollTo(0,0);
+}
+
+// ── Toast ──
+function toast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Toggle edit blocks ──
+function toggleBlock(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('open');
+}
+function markDirty() { isDirty = true; }
+
+// ── Image Upload Handlers ──
+const IMAGE_FIELDS = ['expert_photo_url','expert_intro_image'];
+
+function handleDragOver(e, el) { e.preventDefault(); e.stopPropagation(); el.classList.add('dragover'); }
+function handleDragLeave(e, el) { e.preventDefault(); e.stopPropagation(); el.classList.remove('dragover'); }
+function handleDrop(e, el, key) {
+  e.preventDefault(); e.stopPropagation(); el.classList.remove('dragover');
+  const files = e.dataTransfer.files;
+  if (files.length > 0 && files[0].type.startsWith('image/')) processImageFile(files[0], key);
+}
+function handleFileSelect(e, key) {
+  const files = e.target.files;
+  if (files.length > 0) processImageFile(files[0], key);
+}
+function processImageFile(file, key) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const maxW = 600, maxH = 600;
+      let w = img.width, h = img.height;
+      if (w > maxW || h > maxH) {
+        const ratio = Math.min(maxW/w, maxH/h);
+        w = Math.round(w*ratio); h = Math.round(h*ratio);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+      uploadImageToServer(key, dataUrl);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+async function uploadImageToServer(key, dataUrl) {
+  const dropZone = document.getElementById('drop_'+key);
+  try {
+    if(dropZone) dropZone.style.opacity = '0.5';
+    const resp = await fetch(API+'/upload', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ key, data: dataUrl })
+    });
+    const result = await resp.json();
+    if(dropZone) dropZone.style.opacity = '1';
+    if (result.success && result.url) {
+      document.getElementById('c_'+key).value = result.url;
+      showImagePreview(key, result.url);
+      markDirty();
+      toast('이미지 업로드 완료!');
+    } else { toast('업로드 실패: '+(result.error||''), 'error'); }
+  } catch(e) {
+    if(dropZone) dropZone.style.opacity = '1';
+    toast('업로드 오류: '+e.message, 'error');
+  }
+}
+function showImagePreview(key, src) {
+  const placeholder = document.getElementById('placeholder_'+key);
+  const preview = document.getElementById('preview_'+key);
+  if (!placeholder || !preview) return;
+  if (src) {
+    placeholder.style.display = 'none';
+    preview.style.display = 'block';
+    preview.innerHTML = '<div class="preview-wrap"><img src="'+src+'" alt="미리보기"><button class="remove-btn" onclick="event.stopPropagation();removeImage(\''+key+'\')" title="이미지 제거">✕</button></div>';
+  } else {
+    placeholder.style.display = 'block';
+    preview.style.display = 'none';
+    preview.innerHTML = '';
+  }
+}
+async function removeImage(key) {
+  document.getElementById('c_'+key).value = '';
+  document.getElementById('file_'+key).value = '';
+  showImagePreview(key, '');
+  // Remove from server too
+  try { await fetch(API+'/upload?key='+key, { method:'DELETE' }); } catch{}
+  markDirty();
+}
+
+// ═══════ DASHBOARD ═══════
+async function loadDash() {
+  try {
+    const stats = await fetch(API+'/stats').then(r=>r.json());
+    document.getElementById('sTotal').textContent = stats.total||0;
+    document.getElementById('sPending').textContent = stats.pending||0;
+    document.getElementById('sConfirmed').textContent = stats.confirmed||0;
+    document.getElementById('sCancelled').textContent = (stats.total||0)-(stats.pending||0)-(stats.confirmed||0);
+    const bk = await fetch(API+'/bookings').then(r=>r.json());
+    const recent = bk.slice(0,5);
+    document.getElementById('recentList').innerHTML = recent.length ? recent.map(b => `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--border)">
+        <div><strong style="font-size:.9rem">${b.guest_name||b.name||''}</strong> <span style="color:var(--text2);font-size:.8rem">— ${b.course_name||b.course||''}</span></div>
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <span style="font-size:.78rem;color:var(--text3)">${b.start_date||b.date||''} ${b.time_slot||b.time||''}</span>
+          <span class="badge badge-${b.status}">${b.status==='pending'?'대기':b.status==='confirmed'?'확정':'취소'}</span>
+          ${b.payment ? `<span style="font-size:.7rem;color:var(--text3)">₩${Number(b.payment.totalAmount||0).toLocaleString()}</span>` : ''}
+        </div>
+      </div>
+    `).join('') : '<div class="empty"><div class="icon">📋</div><p>아직 예약이 없습니다</p></div>';
+  } catch(e) {
+    document.getElementById('recentList').innerHTML = '<div class="empty"><div class="icon">🗄️</div><p>DB를 초기화해주세요<br><small style="color:var(--text3)">설정 → 데이터베이스 초기화</small></p></div>';
+  }
+}
+
+// ═══════ CONTENT ═══════
+async function loadContent() {
+  try {
+    const data = await fetch(API+'/content').then(r=>r.json());
+    CONTENT_KEYS.forEach(k => {
+      const el = document.getElementById('c_'+k);
+      if (el) el.value = data[k]||'';
+    });
+    // Load image previews from Blob storage
+    for (const k of IMAGE_FIELDS) {
+      const val = document.getElementById('c_'+k)?.value || '';
+      if (val && val.startsWith('http')) {
+        showImagePreview(k, val);
+      } else {
+        // Try fetching from blob by key
+        try {
+          const imgResp = await fetch(API+'/upload?key='+k);
+          const imgData = await imgResp.json();
+          if (imgData.url) { showImagePreview(k, imgData.url); document.getElementById('c_'+k).value = imgData.url; }
+          else { showImagePreview(k, ''); }
+        } catch{ showImagePreview(k, ''); }
+      }
+    }
+    isDirty = false;
+  } catch {}
+}
+
+async function saveAllContent() {
+  const body = {};
+  CONTENT_KEYS.forEach(k => {
+    const el = document.getElementById('c_'+k);
+    if (el) body[k] = el.value;
+  });
+  try {
+    await fetch(API+'/content', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    isDirty = false;
+    toast('모든 콘텐츠가 저장되었습니다!');
+  } catch(e) { toast('저장 실패: '+e.message,'error'); }
+}
+
+// ═══════ COURSES ═══════
+let coursesData = [];
+async function loadCourses() {
+  try {
+    coursesData = await fetch(API+'/courses').then(r=>r.json());
+    renderCourses();
+  } catch { document.getElementById('courseCards').innerHTML='<div class="empty"><div class="icon">📚</div><p>DB를 먼저 초기화해주세요</p></div>'; }
+}
+
+function renderCourses() {
+  document.getElementById('courseCards').innerHTML = coursesData.length ? coursesData.map(c => `
+    <div class="item-card">
+      <div class="item-actions">
+        <button class="btn-icon" onclick="editCourse(${c.id})" title="수정"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:.75rem">
+        <h4>${c.name}</h4>
+        <span class="badge badge-live">${c.active!==false?'게시 중':'비공개'}</span>
+      </div>
+      <div class="meta" style="margin-top:.3rem">${c.duration} · <strong style="color:var(--accent)">${Number(c.price).toLocaleString()}원</strong></div>
+      <div class="desc">${c.description||''}</div>
+      ${c.features?`<div style="margin-top:.5rem;display:flex;gap:.4rem;flex-wrap:wrap">${c.features.split(',').map(f=>`<span style="font-size:.72rem;padding:.15rem .45rem;background:var(--accent-light);color:var(--accent);border-radius:4px">${f.trim()}</span>`).join('')}</div>`:''}
+    </div>
+  `).join('') : '<div class="empty"><div class="icon">📚</div><p>등록된 과정이 없습니다</p></div>';
+}
+
+function openCourseModal(data) {
+  document.getElementById('courseModalTitle').textContent = data?'과정 수정':'새 교육 과정';
+  document.getElementById('cm_id').value = data?.id||'';
+  document.getElementById('cm_name').value = data?.name||'';
+  document.getElementById('cm_duration').value = data?.duration||'';
+  document.getElementById('cm_price').value = data?.price||'';
+  document.getElementById('cm_desc').value = data?.description||'';
+  document.getElementById('cm_features').value = data?.features||'';
+  document.getElementById('courseModal').classList.add('show');
+}
+function closeCourseModal() { document.getElementById('courseModal').classList.remove('show'); }
+
+function editCourse(id) {
+  const c = coursesData.find(x=>x.id===id);
+  if(c) openCourseModal(c);
+}
+
+async function saveCourse() {
+  const id = document.getElementById('cm_id').value;
+  const body = {
+    name: document.getElementById('cm_name').value,
+    duration: document.getElementById('cm_duration').value,
+    price: parseInt(document.getElementById('cm_price').value)||0,
+    description: document.getElementById('cm_desc').value,
+    features: document.getElementById('cm_features').value
+  };
+  try {
+    if (id) {
+      await fetch(API+'/courses', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:parseInt(id),...body})});
+    } else {
+      await fetch(API+'/courses', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    }
+    closeCourseModal();
+    toast('과정이 저장되었습니다');
+    loadCourses();
+  } catch(e) { toast('저장 실패','error'); }
+}
+
+// ═══════ TESTIMONIALS ═══════
+let testiData = [];
+async function loadTestimonials() {
+  try {
+    testiData = await fetch(API+'/testimonials').then(r=>r.json());
+    renderTestimonials();
+  } catch { document.getElementById('testiCards').innerHTML='<div class="empty"><div class="icon">💬</div><p>DB를 먼저 초기화해주세요</p></div>'; }
+}
+
+function renderTestimonials() {
+  document.getElementById('testiCards').innerHTML = testiData.length ? testiData.map(t => `
+    <div class="item-card">
+      <div class="item-actions">
+        <button class="btn-icon" onclick="editTesti(${t.id})" title="수정"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="btn-icon" onclick="deleteTesti(${t.id})" title="삭제" style="color:var(--red)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></button>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:.75rem">
+        <h4>${t.name}</h4>
+        <span style="color:var(--text2);font-size:.8rem">${t.role||''}</span>
+      </div>
+      <div style="color:#f59e0b;font-size:.8rem;margin-top:.2rem">${'★'.repeat(t.rating||5)}${'☆'.repeat(5-(t.rating||5))}</div>
+      <div class="desc">"${t.content}"</div>
+      ${(t.audio_before || t.audio_after) ? `<div style="margin-top:.5rem;font-size:.75rem;color:var(--text2);">🔊 ${t.audio_label||'음성 비포/애프터 포함'}</div>` : ''}
+    </div>
+  `).join('') : '<div class="empty"><div class="icon">💬</div><p>등록된 후기가 없습니다</p></div>';
+}
+
+function openTestiModal(data) {
+  document.getElementById('testiModalTitle').textContent = data?'후기 수정':'새 수강 후기';
+  document.getElementById('tm_id').value = data?.id||'';
+  document.getElementById('tm_name').value = data?.name||'';
+  document.getElementById('tm_role').value = data?.role||'';
+  document.getElementById('tm_content').value = data?.content||'';
+  document.getElementById('tm_rating').value = data?.rating||5;
+  document.getElementById('tm_audio_before').value = data?.audio_before||'';
+  document.getElementById('tm_audio_after').value = data?.audio_after||'';
+  document.getElementById('tm_audio_label').value = data?.audio_label||'';
+  document.getElementById('testiModal').classList.add('show');
+}
+function closeTestiModal() { document.getElementById('testiModal').classList.remove('show'); }
+
+function editTesti(id) {
+  const t = testiData.find(x=>x.id===id);
+  if(t) openTestiModal(t);
+}
+
+async function saveTesti() {
+  const id = document.getElementById('tm_id').value;
+  const body = {
+    name: document.getElementById('tm_name').value,
+    role: document.getElementById('tm_role').value,
+    content: document.getElementById('tm_content').value,
+    rating: parseInt(document.getElementById('tm_rating').value)||5,
+    audio_before: document.getElementById('tm_audio_before').value||'',
+    audio_after: document.getElementById('tm_audio_after').value||'',
+    audio_label: document.getElementById('tm_audio_label').value||''
+  };
+  try {
+    if (id) {
+      await fetch(API+'/testimonials', {method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:parseInt(id),...body})});
+    } else {
+      await fetch(API+'/testimonials', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    }
+    closeTestiModal();
+    toast('후기가 저장되었습니다');
+    loadTestimonials();
+  } catch(e) { toast('저장 실패','error'); }
+}
+
+async function deleteTesti(id) {
+  if (!confirm('이 후기를 삭제하시겠습니까?')) return;
+  try {
+    await fetch(API+'/testimonials?id='+id, {method:'DELETE'});
+    toast('후기가 삭제되었습니다');
+    loadTestimonials();
+  } catch(e) { toast('삭제 실패','error'); }
+}
+
+// ═══════ BOOKINGS ═══════
+async function loadBookings() {
+  try {
+    allBookings = await fetch(API+'/bookings').then(r=>r.json());
+    renderBookings(allBookings);
+  } catch { document.getElementById('bookingsBody').innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text3)">데이터를 불러올 수 없습니다</td></tr>'; }
+}
+
+function filterB(status, el) {
+  document.querySelectorAll('.filter-btn').forEach(b=>{b.classList.remove('active','btn-primary');b.classList.add('btn-outline')});
+  el.classList.add('active','btn-primary');el.classList.remove('btn-outline');
+  renderBookings(status==='all'?allBookings:allBookings.filter(b=>b.status===status));
+}
+
+function renderBookings(list) {
+  document.getElementById('bookingsBody').innerHTML = list.length ? list.map(b => `
+    <tr>
+      <td><strong>${b.guest_name||b.name||''}</strong></td>
+      <td><div style="font-size:.82rem">${b.guest_email||b.email||''}</div><div style="font-size:.78rem;color:var(--text3)">${b.guest_phone||b.phone||''}</div></td>
+      <td>${b.course_name||b.course||''}</td>
+      <td><div>${b.start_date||b.date||''}</div><div style="font-size:.78rem;color:var(--text3)">${b.time_slot||b.time||''}</div></td>
+      <td>
+        <span class="badge badge-${b.status}">${b.status==='pending'?'대기':b.status==='confirmed'?'확정':'취소'}</span>
+        ${b.payment ? `<div style="font-size:.72rem;color:var(--text3);margin-top:.2rem">${b.payment.method||''} ₩${Number(b.payment.totalAmount||0).toLocaleString()}</div>` : ''}
+      </td>
+      <td>
+        <div style="display:flex;gap:.3rem;align-items:center">
+          ${b.status==='pending'?`
+            <button class="btn btn-green btn-sm" onclick="setStatus('${b.id}','confirmed')">확정</button>
+            <button class="btn btn-red btn-sm" onclick="setStatus('${b.id}','cancelled')">취소</button>
+          `:`<span style="font-size:.75rem;color:var(--text3)">—</span>`}
+          ${b.payment && b.payment.receipt ? `<a href="${b.payment.receipt}" target="_blank" style="font-size:.72rem;color:#C9933E;text-decoration:none" title="영수증">🧾</a>` : ''}
+        </div>
+      </td>
+    </tr>
+  `).join('') : '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text3)">예약이 없습니다</td></tr>';
+}
+
+async function setStatus(id, status) {
+  try {
+    await fetch(API+'/bookings/'+id+'/status',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
+    toast(status==='confirmed'?'예약이 확정되었습니다':'예약이 취소되었습니다');
+    loadBookings();
+  } catch(e) { toast('상태 변경 실패','error'); }
+}
+
+// ═══════ SETTINGS ═══════
+async function initDB() {
+  const el = document.getElementById('dbMsg');
+  el.innerHTML = '<span style="color:var(--yellow)">⏳ 초기화 중...</span>';
+  try {
+    const res = await fetch(API+'/setup').then(r=>r.json());
+    el.innerHTML = '<span style="color:var(--green)">✅ '+res.message+'</span>';
+    toast('DB 초기화 완료!');
+    loadDash();
+  } catch(e) {
+    el.innerHTML = '<span style="color:var(--red)">❌ 오류: '+e.message+'</span>';
+    toast('초기화 실패','error');
+  }
+}
+
+// ── Modal close on backdrop ──
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); });
+});
+
+// ── Warn on unsaved ──
+window.addEventListener('beforeunload', e => { if (isDirty) { e.preventDefault(); e.returnValue = ''; } });
+
+// ── Keyboard shortcut ──
+document.addEventListener('keydown', e => {
+  if ((e.metaKey||e.ctrlKey) && e.key === 's') {
+    e.preventDefault();
+    if (document.getElementById('page-content').classList.contains('active')) saveAllContent();
+  }
+});
+
+// ══════════════════════════════════════════
+// SCHEDULER
+// ══════════════════════════════════════════
+let schY = 2026, schM = 3; // April 2026
+let schSchedule = {};
+let schBlockedSlots = [];
+let schBookings = [];
+
+function schMonth(dir) {
+  schM += dir;
+  if (schM > 11) { schM = 0; schY++; }
+  if (schM < 0) { schM = 11; schY--; }
+  renderSchCal();
+}
+
+async function loadScheduler() {
+  try {
+    const [schedRes, bookRes] = await Promise.all([
+      fetch('/api/schedule'),
+      fetch('/api/bookings')
+    ]);
+    if (schedRes.ok) {
+      const d = await schedRes.json();
+      schSchedule = d.schedule || {};
+      schBlockedSlots = d.blockedSlots || [];
+    }
+    if (bookRes.ok) {
+      schBookings = await bookRes.json();
+      if (Array.isArray(schBookings)) {
+        schBookings = schBookings.filter(b => b.status !== 'cancelled');
+      }
+    }
+  } catch (e) { console.log('스케줄러 로드 실패:', e); }
+  renderSchCal();
+  renderBlockedSlots();
+}
+
+function renderSchCal() {
+  const MN = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const DN = ['일','월','화','수','목','금','토'];
+  document.getElementById('schCalTitle').textContent = `${schY}년 ${MN[schM]}`;
+  const g = document.getElementById('schCalGrid');
+  let h = '';
+  DN.forEach(d => h += `<div style="font-weight:700;padding:6px 0;color:var(--text2);font-size:.75rem">${d}</div>`);
+  const fd = new Date(schY, schM, 1).getDay();
+  const dim = new Date(schY, schM + 1, 0).getDate();
+  const today = new Date();
+  for (let i = 0; i < fd; i++) h += '<div></div>';
+  for (let d = 1; d <= dim; d++) {
+    const ds = `${schY}-${String(schM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const hasBooking = schSchedule[ds] && schSchedule[ds].length > 0;
+    const isFullBlock = schBlockedSlots.some(s => s.date === ds && s.time === 'ALL');
+    const dateBlockedCount = schBlockedSlots.filter(s => s.date === ds && s.time !== 'ALL').length;
+    const dt = new Date(schY, schM, d);
+    const isToday = dt.toDateString() === today.toDateString();
+    let bg = '#f8f9fa'; let clr = 'var(--text1)'; let bdr = '2px solid transparent';
+    if (isFullBlock) { bg = '#fee2e2'; clr = '#dc2626'; }
+    else if (dateBlockedCount > 0) { bg = '#fef3c7'; clr = '#b45309'; }
+    else if (hasBooking) { bg = '#fef3c7'; clr = '#b45309'; }
+    if (isToday) bdr = '2px solid var(--primary)';
+    const cnt = hasBooking ? schSchedule[ds].length : 0;
+    const blockIndicator = isFullBlock ? '🚫' : (dateBlockedCount > 0 ? `🚫${dateBlockedCount}` : '');
+    h += `<div style="padding:6px 2px;border-radius:8px;background:${bg};color:${clr};cursor:pointer;border:${bdr};position:relative" onclick="showSchDay('${ds}')">
+      <div style="font-weight:600">${d}</div>
+      ${cnt > 0 ? `<div style="font-size:.6rem;margin-top:1px">${cnt}건</div>` : ''}
+      ${blockIndicator ? `<div style="font-size:.6rem">${blockIndicator}</div>` : ''}
+    </div>`;
+  }
+  g.innerHTML = h;
+}
+
+function showSchDay(dateStr) {
+  const box = document.getElementById('schDayDetail');
+  box.style.display = 'block';
+  const [y, m, d] = dateStr.split('-');
+  const DN = ['일','월','화','수','목','금','토'];
+  const dt = new Date(+y, +m-1, +d);
+  document.getElementById('schDayTitle').textContent = `${y}년 ${+m}월 ${+d}일 (${DN[dt.getDay()]})`;
+
+  const times = schSchedule[dateStr] || [];
+  const isFullBlock = schBlockedSlots.some(s => s.date === dateStr && s.time === 'ALL');
+  const blockedTimes = schBlockedSlots.filter(s => s.date === dateStr && s.time !== 'ALL').map(s => s.time);
+  const allTimes = ['09:00','10:00','11:00','13:00','14:00','15:00','16:00'];
+
+  // 이 날짜의 예약 찾기
+  const dayBookings = schBookings.filter(b => {
+    if (b.start_date === dateStr) return true;
+    return false;
+  });
+
+  let html = '';
+  if (isFullBlock) html += '<div style="padding:.75rem;background:#fee2e2;border-radius:8px;margin-bottom:1rem;color:#dc2626;font-weight:600">🚫 이 날짜는 차단되어 있습니다</div>';
+
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.5rem">';
+  allTimes.forEach(t => {
+    const booked = times.includes(t);
+    const blocked = blockedTimes.includes(t);
+    let bg, icon;
+    if (blocked) { bg = '#fee2e2'; icon = '🔴 차단됨'; }
+    else if (booked) { bg = '#fef3c7'; icon = '🟡 예약됨'; }
+    else { bg = '#f0fdf4'; icon = '⬜ 가능'; }
+    const unblockBtn = blocked ? `<button class="btn btn-sm" style="margin-top:.3rem;font-size:.65rem;padding:.2rem .3rem" onclick="removeBlockSlot('${dateStr}','${t}')">차단 해제</button>` : '';
+    const blockBtn = !blocked && !booked ? `<button class="btn btn-sm" style="margin-top:.3rem;font-size:.65rem;padding:.2rem .3rem" onclick="addBlockSlot('${dateStr}','${t}')">차단</button>` : '';
+    html += `<div style="padding:.6rem;border-radius:8px;background:${bg};text-align:center;font-size:.82rem">
+      <div style="font-weight:700">${t}</div>
+      <div style="font-size:.7rem;margin-top:2px">${icon}</div>
+      ${unblockBtn}${blockBtn}
+    </div>`;
+  });
+  html += '</div>';
+
+  if (dayBookings.length > 0) {
+    html += '<div style="margin-top:1rem"><strong>예약 목록:</strong></div>';
+    dayBookings.forEach(b => {
+      html += `<div style="padding:.5rem;border:1px solid #e5e7eb;border-radius:6px;margin-top:.5rem;font-size:.82rem">
+        <strong>${b.guest_name}</strong> · ${b.course_name || ''} · ${b.time_slot} · ${b.guest_phone || ''}
+        <span class="badge badge-${b.status}" style="margin-left:.5rem">${b.status === 'confirmed' ? '✅ 확정' : b.status === 'pending' ? '⏳ 대기' : b.status}</span>
+      </div>`;
+    });
+  }
+
+  document.getElementById('schDayContent').innerHTML = html;
+}
+
+async function addBlockSlot(dateArg, timeArg) {
+  let date, time;
+  if (dateArg && timeArg) {
+    // Called from showSchDay with date and time
+    date = dateArg;
+    time = timeArg;
+  } else {
+    // Called from form inputs
+    date = document.getElementById('blockDateInput').value;
+    time = document.getElementById('blockTimeInput').value;
+  }
+
+  if (!date) { alert('날짜를 선택해주세요'); return; }
+
+  try {
+    const res = await fetch('/api/schedule', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date, time })
+    });
+    if (res.ok) {
+      const d = await res.json();
+      schBlockedSlots = d.blockedSlots || [];
+      if (!dateArg) {
+        document.getElementById('blockDateInput').value = '';
+        document.getElementById('blockTimeInput').value = 'ALL';
+      }
+      renderSchCal();
+      renderBlockedSlots();
+      if (document.getElementById('schDayDetail').style.display !== 'none') {
+        showSchDay(date);
+      }
+    }
+  } catch (e) { alert('차단 추가 실패: ' + e.message); }
+}
+
+async function removeBlockSlot(date, time) {
+  try {
+    const res = await fetch('/api/schedule', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date, time })
+    });
+    if (res.ok) {
+      const d = await res.json();
+      schBlockedSlots = d.blockedSlots || [];
+      renderSchCal();
+      renderBlockedSlots();
+      if (document.getElementById('schDayDetail').style.display !== 'none') {
+        showSchDay(date);
+      }
+    }
+  } catch (e) { alert('차단 해제 실패: ' + e.message); }
+}
+
+function renderBlockedSlots() {
+  const box = document.getElementById('blockedSlotsList');
+  if (schBlockedSlots.length === 0) {
+    box.innerHTML = '<span style="color:var(--text2);font-size:.82rem">차단된 슬롯이 없습니다</span>';
+    return;
+  }
+  const sorted = schBlockedSlots.slice().sort((a, b) => {
+    if (a.date !== b.date) return a.date.localeCompare(b.date);
+    const allLast = (x) => x === 'ALL' ? '99:99' : x;
+    return allLast(a.time).localeCompare(allLast(b.time));
+  });
+  box.innerHTML = sorted.map(s => {
+    const label = s.time === 'ALL' ? `${s.date} (하루 종일)` : `${s.date} ${s.time}`;
+    return `<div style="display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .7rem;background:#fee2e2;border-radius:20px;font-size:.8rem;color:#dc2626">
+      ${label}
+      <span style="cursor:pointer;font-weight:700" onclick="removeBlockSlot('${s.date}','${s.time}')" title="차단 해제">✕</span>
+    </div>`;
+  }).join('');
+}
+
+// Init
+loadDash();
+</script>
+</body>
+</html>
